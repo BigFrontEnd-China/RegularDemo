@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>regular演示</title>
+  <style type="text/css">
+    html, body, div, input {
+      margin: 0px;
+      padding: 0px;
+    }
+    .main {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .main .header {
+      position: absolute;
+      top: 0px;
+      width: 100%;
+      height: 60px;
+      line-height: 60px;
+      text-align: center;
+      background-color: #14bcea;
+      color: #ffffff;
+      font-size: 24px;
+    }
+    .from {
+      width: 800px;
+      height: 600px;
+      text-align: center;
+    }
+    .from .fromGroup {
+      width: 100%;
+      padding: 5px 0px;
+    }
+    .from .fromGroup label, .from .fromGroup input {
+      display: inline-block;
+      height: 35px;
+      line-height: 35px;
+      padding: 0px 5px;
+      width: 200px;
+    }
+    .from .fromGroup label {
+      width: auto;
+      text-align: right;
+    }
+    .from .fromGroup input {
+      border: 1px solid #14bcea;
+      border-radius: 4px;
+    }
+    .from button {
+      width: 100px;
+      height: 35px;
+      border: 0px;
+      border-radius: 4px;
+      cursor: pointer;
+      background-color: #14bcea;
+      color: #ffffff;
+      font-size: 20px;
+    }
+  </style>
+</head>
+<body class="main">
+  <div class="header">regular组件演示</div>
+  <div id="components"></div>
+  <script id="from" type="text/regular" name='from'>
+
+    <div class="from">
+      <InputBox title="演示1" key="example1" value="1"></InputBox>
+      <InputBox title="演示2" key="example2" value="2"></InputBox>
+      <InputBox title="演示3" key="example3" value="3"></InputBox>
+      <button on-click="{this.dataHandle()}">OK</button>  
+    </div>
+
+  </script>
+  <script type="text/javascript" src="regular.js"></script>
+  <script type="text/javascript">
+/*    var mapData = {
+      '1': 'A',
+      '2': 'B',
+      '3': 'C'
+    }*/
+  /*     | join Regular.filter("join", {
+      set: function (value) {
+        return value
+      },
+      get: function (value) {
+        return '过滤' + value
+      }
+    })*/
+/*  r-replace={value} Regular.directive('r-replace', function(elem, value){
+      this.$watch(value, function(newValue){
+        elem.value = mapData[newValue]
+      })
+    })*/
+    var InputBoxTemplate = '<div class="fromGroup"><label for="">{title}</label><input type="text" r-model={value}></div>' 
+    var InputBox = Regular.extend({
+      template: InputBoxTemplate,
+      name: 'InputBox',
+      data: {
+        title: '',
+        key: '',
+        value: ''
+      }/*,
+      computed: { // 计算属性处理
+        value: {
+          set: function(value, data){
+            data.value = value
+          },
+          get: function(data){
+            return mapData[data.value]
+          }
+        }
+      }*/
+    })
+  </script>
+  <script type="text/javascript">
+    var From = new Regular({
+      template: '#from',
+      data: {
+        list: []
+      },
+      config: function () {},
+      init: function () {},
+      dataHandle: function () {
+        this.data.list = []
+        this._children.forEach((item) => {
+          var data = item.data
+          this.data.list.push({ [data.key]: data.value })
+        })
+        console.log(this.data.list)
+      }
+    }).$inject('#components')
+  </script>
+</body>
+</html>
