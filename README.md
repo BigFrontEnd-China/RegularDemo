@@ -1,2 +1,5 @@
 # RegularDemo
-regular组件编写Demo
+regular基础组件编写
+regular指令编写
+regular过滤器编写
+regular计算属性使用
